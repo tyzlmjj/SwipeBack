@@ -1,14 +1,10 @@
 package me.majiajie.swipebacktest.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
-import me.majiajie.swipeback.SwipeLayout;
-import me.majiajie.swipeback.utils.ActivityStack;
 import me.majiajie.swipeback.SwipeBackActivity;
 import me.majiajie.swipebacktest.R;
 
@@ -19,16 +15,6 @@ public class SecondActivity extends SwipeBackActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        Activity activity = ActivityStack.getInstance().getBackActivity();
-        if(activity != null)
-        {
-            Log.i("asd","back: " + activity.hashCode());
-            if(activity instanceof SwipeBackActivity)
-            {
-                SwipeLayout swipeLayout = ((SwipeBackActivity)activity).getSwipeLayout();
-                swipeLayout.setTranslationY(200);
-            }
-        }
 
         if(getSupportActionBar() != null)
         {

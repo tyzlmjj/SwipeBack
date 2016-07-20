@@ -9,7 +9,7 @@ public class SwipeBackHelper
 {
     private Activity mActivity;
 
-    private SwipeLayout mSwipeLayout;
+    private SwipeBackLayout mSwipeBackLayout;
 
     public SwipeBackHelper(Activity activity)
     {
@@ -20,25 +20,23 @@ public class SwipeBackHelper
     {
         mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mActivity.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
-        mSwipeLayout = new SwipeLayout(mActivity);
-        mSwipeLayout.addSwipeListener(new SwipeLayout.SwipeListener()
-        {
+        mSwipeBackLayout = new SwipeBackLayout(mActivity);
+        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
-            public void onEdgeTouch(int edge)
-            {
-//                Utils.convertActivityToTranslucent(mActivity);
+            public void onEdgeTouch(int edge) {
+
             }
         });
     }
 
     public void onPostCreate()
     {
-        mSwipeLayout.attachToActivity(mActivity);
+        mSwipeBackLayout.attachToActivity(mActivity);
     }
 
-    protected SwipeLayout getSwipeLayout()
+    protected SwipeBackLayout getSwipeLayout()
     {
-        return mSwipeLayout;
+        return mSwipeBackLayout;
     }
 
 

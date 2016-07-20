@@ -23,7 +23,7 @@ public class SwipeBackActivity extends AppCompatActivity
         mSwipeBackHelper.onPostCreate();
     }
 
-    public SwipeLayout getSwipeLayout()
+    public SwipeBackLayout getSwipeLayout()
     {
         return mSwipeBackHelper.getSwipeLayout();
     }

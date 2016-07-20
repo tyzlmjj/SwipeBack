@@ -15,30 +15,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import java.util.ArrayList;
-import java.util.List;
+import me.majiajie.swipeback.utils.ActivityStack;
 
-
-public class SwipeLayout extends FrameLayout
+public class SwipeBackLayout extends FrameLayout
 {
-//    private static final int MIN_FLING_VELOCITY = 400;//最小每秒滑动DP数
-
-    private Activity mActivity;
+    private static final int FULL_ALPHA = 255;
 
     private ViewDragHelper mViewDragHelper;
 
+    private SwipeListener mSwipeListener;
+
+    private Activity mActivity;
+
     private View mContentView;
 
-    private List<SwipeListener> mListeners;
-
-    private static final int FULL_ALPHA = 255;
-
     /**
-     * 默认滑动销毁Activity的界限
+     * 记录左边移动的像素值
      */
-    private static final float DEFAULT_SCROLL_THRESHOLD = 0.3f;
-
-    private static final int OVERSCROLL_DISTANCE = 10;//px
+    private int mContentLeft;
 
     /**
      * 判断滑动是否有效
@@ -51,47 +45,37 @@ public class SwipeLayout extends FrameLayout
     private float mScrollPercent;
 
     /**
-     * 滑动销毁Activity的界限
-     */
-    private float mScrollThreshold = DEFAULT_SCROLL_THRESHOLD;
-
-    /**
-     * ContentView left
-     */
-    private int mContentLeft;
-
-    /**
      * 阴影
      */
     private Drawable mShadowLeft;
 
+    /**
+     * 记录阴影透明比例 0~1
+     */
     private float mScrimOpacity;
 
     private Rect mTmpRect = new Rect();
 
     private boolean mInLayout;
 
-    public SwipeLayout(Context context)
-    {
+    public SwipeBackLayout(Context context) {
         super(context);
         init(context);
     }
 
-    public SwipeLayout(Context context, AttributeSet attrs)
-    {
+    public SwipeBackLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public SwipeLayout(Context context, AttributeSet attrs, int defStyleAttr)
-    {
+    public SwipeBackLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     private void init(Context context)
     {
-        mViewDragHelper = ViewDragHelper.create(SwipeLayout.this,new ViewDragCallback());
+        mViewDragHelper = ViewDragHelper.create(SwipeBackLayout.this,new ViewDragCallback());
         mViewDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
 
         mShadowLeft = ContextCompat.getDrawable(context,R.drawable.shadow_left);
@@ -197,30 +181,18 @@ public class SwipeLayout extends FrameLayout
         decor.addView(this);
     }
 
+    private void setContentView(ViewGroup decorChild)
+    {
+        mContentView = decorChild;
+    }
+
     /**
      * 添加滑动监听
      * @param listener {@link SwipeListener}
      */
     public void addSwipeListener(SwipeListener listener)
     {
-        if (mListeners == null)
-        {
-            mListeners = new ArrayList<>();
-        }
-        mListeners.add(listener);
-    }
-
-    /**
-     * 移除滑动监听
-     * @param listener {@link SwipeListener}
-     */
-    public void removeSwipeListener(SwipeListener listener)
-    {
-        if (mListeners == null)
-        {
-            return;
-        }
-        mListeners.remove(listener);
+        mSwipeListener = listener;
     }
 
     public interface SwipeListener
@@ -232,23 +204,16 @@ public class SwipeLayout extends FrameLayout
         void onEdgeTouch(int edge);
     }
 
-    private void setContentView(ViewGroup decorChild)
+    private class ViewDragCallback extends ViewDragHelper.Callback
     {
-        mContentView = decorChild;
-    }
-
-    private class ViewDragCallback extends ViewDragHelper.Callback{
-
         @Override
         public boolean tryCaptureView(View child, int pointerId)
         {
             boolean ret = mViewDragHelper.isEdgeTouched(ViewDragHelper.EDGE_LEFT, pointerId);
-            if (ret && mListeners != null && !mListeners.isEmpty())
+            if (ret && mSwipeListener != null)
             {
-                for (SwipeListener listener : mListeners)
-                {
-                    listener.onEdgeTouch(ViewDragHelper.EDGE_LEFT);
-                }
+                mSwipeListener.onEdgeTouch(ViewDragHelper.EDGE_LEFT);
+
                 mIsScrollOverValid = true;
             }
             return ret;
@@ -266,22 +231,19 @@ public class SwipeLayout extends FrameLayout
                     / (mContentView.getWidth() + mShadowLeft.getIntrinsicWidth()));
 
             mContentLeft = left;
+
+            moveBackgroundActivity(mScrollPercent);
+
             invalidate();
-            if (mScrollPercent < mScrollThreshold && !mIsScrollOverValid) {
-                mIsScrollOverValid = true;
-            }
-//            if (mListeners != null && !mListeners.isEmpty()
-//                    && mDragHelper.getViewDragState() == STATE_DRAGGING
-//                    && mScrollPercent >= mScrollThreshold && mIsScrollOverValid) {
-//                mIsScrollOverValid = false;
-//                for (SwipeListener listener : mListeners) {
-//                    listener.onScrollOverThreshold();
-//                }
+
+//            if (mScrollPercent < mScrollThreshold && !mIsScrollOverValid)
+//            {
+//                mIsScrollOverValid = true;
 //            }
 
-            if (mScrollPercent >= 1) {
-                if (!mActivity.isFinishing())
-                    mActivity.finish();
+            if (mScrollPercent >= 1 && !mActivity.isFinishing())
+            {
+                mActivity.finish();
             }
         }
 
@@ -292,8 +254,7 @@ public class SwipeLayout extends FrameLayout
 
             int left = 0, top = 0;
 
-            left = xvel > 0 || xvel == 0 && mScrollPercent > mScrollThreshold ? childWidth
-                    + mShadowLeft.getIntrinsicWidth() + OVERSCROLL_DISTANCE : 0;
+            left = xvel > 100 ? childWidth + mShadowLeft.getIntrinsicWidth() : 0;
 
             mViewDragHelper.settleCapturedViewAt(left, top);
 
@@ -303,27 +264,28 @@ public class SwipeLayout extends FrameLayout
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx)
         {
-            int ret = 0;
-
-            ret = Math.min(child.getWidth(), Math.max(left, 0));
+            int ret = Math.min(child.getWidth(), Math.max(left, 0));
 
             return ret;
         }
-
-        @Override
-        public void onViewDragStateChanged(int state) {
-            super.onViewDragStateChanged(state);
-//            if (mListeners != null && !mListeners.isEmpty()) {
-//                for (SwipeListener listener : mListeners) {
-//                    listener.onScrollStateChange(state, mScrollPercent);
-//                }
-//            }
-        }
     }
 
+    /**
+     * 移动背景Activity
+     * @param scrollPercent
+     */
+    private void moveBackgroundActivity(float scrollPercent)
+    {
+        Activity activity = ActivityStack.getInstance().getBackActivity();
+        if(activity instanceof SwipeBackActivity)
+        {
+            SwipeBackLayout swipeBackLayout = ((SwipeBackActivity) activity).getSwipeLayout();
 
+            int width = swipeBackLayout.getWidth();
 
-
+            swipeBackLayout.setTranslationX(-width*0.3f*Math.min(1f,1f-scrollPercent));
+        }
+    }
 
 
 }
