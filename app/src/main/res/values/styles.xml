@@ -1,27 +1,37 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <!--<item name="android:windowAnimationStyle">@style/Animation.Activity.Style</item>-->
+
+    </style>
+
+    <style name="AppTheme" parent="BaseTheme">
+
 
     </style>
 
     <style name="Animation.Activity.Style" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/translucent_enter_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/translucent_exit</item>
-        <item name="android:activityCloseEnterAnimation">@anim/translucent_enter</item>
-        <item name="android:activityCloseExitAnimation">@anim/translucent_exit_right</item>
+        <item name="android:activityOpenEnterAnimation">@anim/translucent_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/translucent_open_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/translucent_close_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/translucent_close_exit</item>
     </style>
 
-    <style name="MyAnim" parent="@android:style/Animation.Translucent">
-        <item name="android:windowEnterAnimation">@anim/translucent_enter</item>
-        <item name="android:windowExitAnimation">@anim/translucent_exit</item>
-    </style>
+    <!--<style name="MyAnim" parent="@android:style/Animation.Translucent">-->
+        <!--<item name="android:windowEnterAnimation">@anim/translucent_enter_right</item>-->
+        <!--<item name="android:windowExitAnimation">@anim/translucent_exit</item>-->
+    <!--</style>-->
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

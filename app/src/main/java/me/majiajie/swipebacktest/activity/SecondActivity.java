@@ -5,16 +5,17 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import me.majiajie.swipeback.SwipeBackActivity;
 import me.majiajie.swipebacktest.R;
 
-public class SecondActivity extends SwipeBackActivity {
+public class SecondActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
+
+        initToolbar();
 
         if(getSupportActionBar() != null)
         {
@@ -28,12 +29,18 @@ public class SecondActivity extends SwipeBackActivity {
     }
 
     @Override
+    public void onBackPressed()
+    {
+        scrollToFinishActivity();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
         {
             case android.R.id.home:
-                SecondActivity.this.finish();
+                scrollToFinishActivity();
                 return true;
         }
         return super.onOptionsItemSelected(item);

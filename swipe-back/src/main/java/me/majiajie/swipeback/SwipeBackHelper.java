@@ -4,6 +4,7 @@ package me.majiajie.swipeback;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.View;
 
 public class SwipeBackHelper
 {
@@ -23,7 +24,8 @@ public class SwipeBackHelper
         mSwipeBackLayout = new SwipeBackLayout(mActivity);
         mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
             @Override
-            public void onEdgeTouch(int edge) {
+            public void onEdgeTouch(int edge)
+            {
 
             }
         });
@@ -39,5 +41,10 @@ public class SwipeBackHelper
         return mSwipeBackLayout;
     }
 
-
+    public View findViewById(int id) {
+        if (mSwipeBackLayout != null) {
+            return mSwipeBackLayout.findViewById(id);
+        }
+        return null;
+    }
 }

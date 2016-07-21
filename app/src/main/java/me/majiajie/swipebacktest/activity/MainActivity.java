@@ -2,68 +2,36 @@ package me.majiajie.swipebacktest.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
-import me.majiajie.swipebacktest.AppUtlis;
+import me.majiajie.pagerbottomtabstrip.PagerBottomTabLayout;
 import me.majiajie.swipebacktest.R;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
 {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i("asd","top: " + AppUtlis.getTopActivityName(this));
+        initToolbar();
 
+        setSwipeBackEnable(false);
+
+        initTab();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i("asd","onStart");
-    }
+    private void initTab()
+    {
+        PagerBottomTabLayout bottomTabLayout = (PagerBottomTabLayout) findViewById(R.id.tab);
 
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        Log.i("asd","onPostCreate");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i("asd","onPause");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.i("asd","onResume");
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        Log.i("asd","onPostResume");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i("asd","onStop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i("asd","onDestroy");
+        bottomTabLayout.builder()
+                .addTabItem(android.R.drawable.ic_menu_camera, "相机")
+                .addTabItem(android.R.drawable.ic_menu_compass, "位置")
+                .addTabItem(android.R.drawable.ic_menu_search, "搜索")
+                .addTabItem(android.R.drawable.ic_menu_help, "帮助")
+                .build();
     }
 
     public void next(View v)
