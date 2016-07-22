@@ -16,11 +16,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import me.majiajie.swipeback.utils.ActivityStack;
+import me.majiajie.swipeback.utils.Utils;
 
 public class SwipeBackLayout extends FrameLayout
 {
-    private static final int FULL_ALPHA = 255;
-
     /**
      * 滑动销毁距离界限
      */
@@ -29,11 +28,11 @@ public class SwipeBackLayout extends FrameLayout
     /**
      * 滑动销毁速度界限
      */
-    private static final float DEFAULT_VELOCITY_THRESHOLD = 0.35f;
+    private static final float DEFAULT_VELOCITY_THRESHOLD = 400f;
+
+    private static final int FULL_ALPHA = 255;
 
     private ViewDragHelper mViewDragHelper;
-
-    private SwipeListener mSwipeListener;
 
     private Activity mActivity;
 
@@ -43,11 +42,6 @@ public class SwipeBackLayout extends FrameLayout
      * 记录左边移动的像素值
      */
     private int mContentLeft;
-
-    /**
-     * 判断滑动是否有效
-     */
-    private boolean mIsScrollOverValid;
 
     /**
      * 当前滑动范围 [0,1)
@@ -90,7 +84,7 @@ public class SwipeBackLayout extends FrameLayout
         mViewDragHelper = ViewDragHelper.create(SwipeBackLayout.this,new ViewDragCallback());
         mViewDragHelper.setEdgeTrackingEnabled(ViewDragHelper.EDGE_LEFT);
 
-        mShadowLeft = ContextCompat.getDrawable(context,R.drawable.shadow_left);
+        mShadowLeft = ContextCompat.getDrawable(context,R.drawable.swipeback_shadow_left);
     }
 
     @Override
@@ -144,7 +138,8 @@ public class SwipeBackLayout extends FrameLayout
     }
 
     @Override
-    public void computeScroll() {
+    public void computeScroll()
+    {
         mScrimOpacity = 1 - mScrollPercent;
         if (mViewDragHelper.continueSettling(true))
         {
@@ -201,37 +196,13 @@ public class SwipeBackLayout extends FrameLayout
         CanSwipeBack = enable;
     }
 
-    /**
-     * 右滑结束Activity
-     */
-    public void scrollToFinishActivity()
-    {
-        mViewDragHelper.smoothSlideViewTo(mContentView,
-                mContentView.getWidth() + mShadowLeft.getIntrinsicWidth(),0);
-        invalidate();
-    }
-
-    /**
-     * 添加滑动监听
-     * @param listener {@link SwipeListener}
-     */
-    public void addSwipeListener(SwipeListener listener)
-    {
-        mSwipeListener = listener;
+    protected View getContentView(){
+        return mContentView;
     }
 
     private void setContentView(ViewGroup decorChild)
     {
         mContentView = decorChild;
-    }
-
-    public interface SwipeListener
-    {
-        /**
-         * 边缘触发时调用
-         * @param edge
-         */
-        void onEdgeTouch(int edge);
     }
 
     private class ViewDragCallback extends ViewDragHelper.Callback
@@ -240,13 +211,12 @@ public class SwipeBackLayout extends FrameLayout
         public boolean tryCaptureView(View child, int pointerId)
         {
             boolean ret = mViewDragHelper.isEdgeTouched(ViewDragHelper.EDGE_LEFT, pointerId);
-            if (CanSwipeBack && ret && mSwipeListener != null)
+            if (CanSwipeBack && ret)
             {
-                mSwipeListener.onEdgeTouch(ViewDragHelper.EDGE_LEFT);
-
-                mIsScrollOverValid = true;
+                Utils.convertActivityToTranslucent(mActivity);
+                return true;
             }
-            return CanSwipeBack && ret;
+            return false;
         }
 
         @Override
@@ -278,7 +248,6 @@ public class SwipeBackLayout extends FrameLayout
             final int childWidth = releasedChild.getWidth();
 
             int left = 0, top = 0;
-
             left = xvel > DEFAULT_VELOCITY_THRESHOLD || mScrollPercent > DEFAULT_SCROLL_THRESHOLD ?
                     childWidth + mShadowLeft.getIntrinsicWidth() : 0;
 
@@ -291,8 +260,18 @@ public class SwipeBackLayout extends FrameLayout
         public int clampViewPositionHorizontal(View child, int left, int dx)
         {
             int ret = Math.min(child.getWidth(), Math.max(left, 0));
-
             return ret;
+        }
+
+        @Override
+        public void onViewDragStateChanged(int state)
+        {
+            super.onViewDragStateChanged(state);
+
+            if(state == ViewDragHelper.STATE_IDLE && mScrollPercent < 1f)
+            {
+                Utils.convertActivotyFromTranslucent(mActivity);
+            }
         }
     }
 
@@ -305,13 +284,13 @@ public class SwipeBackLayout extends FrameLayout
         Activity activity = ActivityStack.getInstance().getBackActivity();
         if(activity instanceof SwipeBackActivity)
         {
-            SwipeBackLayout swipeBackLayout = ((SwipeBackActivity) activity).getSwipeBackLayout();
+            View view = ((SwipeBackActivity) activity).getContentView();
 
-            if(swipeBackLayout != null)
+            if(view != null)
             {
-                int width = swipeBackLayout.getWidth();
+                int width = view.getWidth();
 
-                swipeBackLayout.setTranslationX(-width*0.3f*Math.max(0f,1f-(scrollPercent + 0.1f)));
+                view.setTranslationX(-width*0.3f*Math.max(0f,1f-(scrollPercent + 0.1f)));
             }
         }
     }

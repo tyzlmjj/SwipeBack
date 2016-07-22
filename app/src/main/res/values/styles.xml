@@ -7,9 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
-        <!--<item name="android:windowAnimationStyle">@style/Animation.Activity.Style</item>-->
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Style</item>
 
     </style>
 
@@ -18,17 +16,10 @@
 
     </style>
 
-    <style name="Animation.Activity.Style" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/translucent_open_enter</item>
-        <item name="android:activityOpenExitAnimation">@anim/translucent_open_exit</item>
-        <item name="android:activityCloseEnterAnimation">@anim/translucent_close_enter</item>
-        <item name="android:activityCloseExitAnimation">@anim/translucent_close_exit</item>
-    </style>
 
-    <!--<style name="MyAnim" parent="@android:style/Animation.Translucent">-->
-        <!--<item name="android:windowEnterAnimation">@anim/translucent_enter_right</item>-->
-        <!--<item name="android:windowExitAnimation">@anim/translucent_exit</item>-->
-    <!--</style>-->
+    <style name="MyAnim" parent="@android:style/Animation.Translucent">
+        <item name="android:windowExitAnimation">@null</item>
+    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

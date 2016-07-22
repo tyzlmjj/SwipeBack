@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Animation.Activity.Style" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/swipeback_activity_open_enter</item>
+        <item name="android:activityOpenExitAnimation">@anim/swipeback_activity_open_exit</item>
+        <item name="android:activityCloseEnterAnimation">@anim/swipeback_activity_close_enter</item>
+        <item name="android:activityCloseExitAnimation">@anim/swipeback_activity_close_exit</item>
+    </style>
+</resources>

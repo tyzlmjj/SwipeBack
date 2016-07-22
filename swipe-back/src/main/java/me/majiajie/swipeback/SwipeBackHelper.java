@@ -22,13 +22,6 @@ public class SwipeBackHelper
         mActivity.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mActivity.getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
         mSwipeBackLayout = new SwipeBackLayout(mActivity);
-        mSwipeBackLayout.addSwipeListener(new SwipeBackLayout.SwipeListener() {
-            @Override
-            public void onEdgeTouch(int edge)
-            {
-
-            }
-        });
     }
 
     public void onPostCreate()
@@ -36,15 +29,22 @@ public class SwipeBackHelper
         mSwipeBackLayout.attachToActivity(mActivity);
     }
 
-    protected SwipeBackLayout getSwipeLayout()
+    protected View getContentView()
     {
-        return mSwipeBackLayout;
+        return mSwipeBackLayout.getContentView();
     }
 
-    public View findViewById(int id) {
-        if (mSwipeBackLayout != null) {
+    public View findViewById(int id)
+    {
+        if (mSwipeBackLayout != null)
+        {
             return mSwipeBackLayout.findViewById(id);
         }
         return null;
+    }
+
+    public void setSwipeBackEnable(boolean enable)
+    {
+        mSwipeBackLayout.setSwipeBackEnable(enable);
     }
 }

@@ -15,11 +15,12 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initToolbar();
-
-        setSwipeBackEnable(false);
+        initToolbar(R.id.toolbar);
 
         initTab();
+
+        setSwipeBackEnable(false);//设置不能边缘滑动返回
+
     }
 
     private void initTab()

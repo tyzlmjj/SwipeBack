@@ -1,14 +1,9 @@
 package me.majiajie.swipeback;
 
-import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-
-import me.majiajie.swipeback.utils.ActivityStack;
 
 public class SwipeBackActivity extends AppCompatActivity
 {
@@ -30,6 +25,20 @@ public class SwipeBackActivity extends AppCompatActivity
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus)
+    {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus)
+        {
+            View view = getContentView();
+            if(view != null)
+            {
+                view.setTranslationX(0);
+            }
+        }
+    }
+
+    @Override
     public View findViewById(int id)
     {
         View v = super.findViewById(id);
@@ -38,46 +47,17 @@ public class SwipeBackActivity extends AppCompatActivity
         return v;
     }
 
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode, Bundle options)
+    public View getContentView()
     {
-        Activity activity = ActivityStack.getInstance().getTopActivity();
-        if(activity instanceof SwipeBackActivity)
-        {
-            View view = ((SwipeBackActivity) activity).getSwipeBackLayout();
-
-            if(view != null)
-            {
-                ObjectAnimator objectAnimator =
-                        ObjectAnimator.ofFloat(view,"TranslationX",-view.getWidth()*0.3f);
-                objectAnimator.setDuration(200);
-                objectAnimator.setCurrentPlayTime(100);
-                objectAnimator.start();
-            }
-        }
-        super.startActivityForResult(intent, requestCode, options);
-    }
-
-    public SwipeBackLayout getSwipeBackLayout()
-    {
-        return mSwipeBackHelper.getSwipeLayout();
+        return mSwipeBackHelper.getContentView();
     }
 
     /**
      * 设置是否可以边缘滑动返回
-     * @param enable
+     * @param enable    true可以边缘滑动返回
      */
     public void setSwipeBackEnable(boolean enable)
     {
-        getSwipeBackLayout().setSwipeBackEnable(enable);
+        mSwipeBackHelper.setSwipeBackEnable(enable);
     }
-
-    /**
-     * 右滑结束Activity
-     */
-    public void scrollToFinishActivity()
-    {
-        getSwipeBackLayout().scrollToFinishActivity();
-    }
-
 }

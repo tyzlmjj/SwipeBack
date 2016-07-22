@@ -4,15 +4,14 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 
 
 public class ActivityStack implements Application.ActivityLifecycleCallbacks
 {
     private static ActivityStack ourInstance = new ActivityStack();
 
-    private List<Activity> activities = new ArrayList<>();
+    private Vector<Activity> activities = new Vector<>();
 
     public static ActivityStack getInstance()
     {
@@ -48,14 +47,12 @@ public class ActivityStack implements Application.ActivityLifecycleCallbacks
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState)
     {
-        for(Activity ac:activities)
+        int index = activities.indexOf(activity);
+
+        if(index == -1)
         {
-            if(activity == ac)
-            {
-                return;
-            }
+            activities.add(activity);
         }
-        activities.add(activity);
     }
 
     @Override
