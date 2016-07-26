@@ -16,7 +16,7 @@ public class AFragment extends Fragment
 
     public void AFragment() {}
 
-    public Fragment newInstance(String content)
+    public static Fragment newInstance(String content)
     {
         Fragment fragment = new AFragment();
         Bundle bundle = new Bundle();
@@ -38,7 +38,7 @@ public class AFragment extends Fragment
         textView.setTextSize(30);
         textView.setGravity(Gravity.CENTER);
         textView.setText("测试页面\n\n" +mContent);
-        textView.setBackgroundColor(0xFFececec);
+        textView.setBackgroundColor(0xFFECECEC);
         return textView;
     }
 }

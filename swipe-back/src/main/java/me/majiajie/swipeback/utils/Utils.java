@@ -9,44 +9,6 @@ import java.lang.reflect.Method;
 
 public class Utils
 {
-//    public static void convertActivityToTranslucent(Activity activity)
-//    {
-//        try
-//        {
-//            Class<?>[] classes = Activity.class.getDeclaredClasses();
-//            Class<?> translucentConversionListenerClazz = null;
-//
-//            for (Class clazz : classes)
-//            {
-//                if (clazz.getSimpleName().contains("TranslucentConversionListener")) {
-//                    translucentConversionListenerClazz = clazz;
-//                }
-//            }
-//
-//            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-//            {
-//                Method method = Activity.class.getDeclaredMethod("convertToTranslucent",
-//                        translucentConversionListenerClazz, ActivityOptions.class);
-//                method.setAccessible(true);
-//                boolean changeCanvasToTranslucent = (boolean) method.invoke(activity,null,null);
-//
-//                Log.i("asd","boolean: "+changeCanvasToTranslucent);
-//
-//            }
-//            else
-//            {
-//                Method method_first = Activity.class.getDeclaredMethod("convertToTranslucent",
-//                        translucentConversionListenerClazz);
-//                method_first.setAccessible(true);
-//                method_first.invoke(activity,new Object[]{null});
-//            }
-//        }
-//        catch (Throwable t)
-//        {
-//            t.printStackTrace();
-//        }
-//    }
-
     public static void convertActivotyFromTranslucent(Activity activity)
     {
         try
@@ -61,35 +23,11 @@ public class Utils
         }
     }
 
-
-    public static void convertActivityToTranslucent(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    public static void convertActivityToTranslucent(Activity activity)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
             convertActivityToTranslucentAfterL(activity);
-        } else {
-            convertActivityToTranslucentBeforeL(activity);
-        }
-    }
-
-    /**
-     * Calling the convertToTranslucent method on platforms before Android 5.0
-     */
-    public static void convertActivityToTranslucentBeforeL(Activity activity) {
-        try {
-            Class<?>[] classes = Activity.class.getDeclaredClasses();
-            Class<?> translucentConversionListenerClazz = null;
-            for (Class clazz : classes) {
-                if (clazz.getSimpleName().contains("TranslucentConversionListener")) {
-                    translucentConversionListenerClazz = clazz;
-                }
-            }
-            Method method = Activity.class.getDeclaredMethod("convertToTranslucent",
-                    translucentConversionListenerClazz);
-            method.setAccessible(true);
-            method.invoke(activity, new Object[] {
-                    null
-            });
-        } catch (Throwable t) {
-            t.printStackTrace();
         }
     }
 

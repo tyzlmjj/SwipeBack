@@ -38,14 +38,6 @@ public class SwipeBackActivity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean startActivityIfNeeded(Intent intent, int requestCode, Bundle options)
-//    {
-//        boolean ret = super.startActivityIfNeeded(intent, requestCode, options);
-//        this.overridePendingTransition(R.anim.swipeback_activity_open_enter,R.anim.swipeback_activity_open_exit);
-//        return ret;
-//    }
-
     @Override
     public View findViewById(int id)
     {

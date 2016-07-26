@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#ECECEC"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
@@ -23,15 +24,12 @@
         android:onClick="next"
         android:layout_below="@+id/toolbar"/>
 
-    <TextView
+    <me.majiajie.swipebacktest.view.MyViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="main"
-        android:textSize="20sp"
-        android:gravity="center"
         android:layout_below="@+id/btn"
-        android:layout_above="@+id/tab"
-        />
+        android:layout_above="@+id/tab"/>
 
     <me.majiajie.pagerbottomtabstrip.PagerBottomTabLayout
         android:id="@+id/tab"

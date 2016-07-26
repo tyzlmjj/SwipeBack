@@ -6,9 +6,8 @@
         <!--透明状态栏-跟侧滑返回无关-->
         <item name="android:windowTranslucentStatus">true</item>
 
-        <!--侧滑滑动-在API21以下必要的-->
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <!--侧滑滑动-在API21以上的(不是必要的，你可以自定义，但是推荐这个动画)-->
+        <item name="android:windowAnimationStyle">@style/Animation.Activity.Style</item>
 
     </style>
 

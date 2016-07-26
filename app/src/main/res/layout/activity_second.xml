@@ -16,15 +16,10 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="next"
         android:onClick="next"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

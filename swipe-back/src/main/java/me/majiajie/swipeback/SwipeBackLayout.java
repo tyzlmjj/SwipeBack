@@ -23,7 +23,7 @@ public class SwipeBackLayout extends FrameLayout
     /**
      * 滑动销毁距离界限
      */
-    private static final float DEFAULT_SCROLL_THRESHOLD = 0.35f;
+    private static final float DEFAULT_SCROLL_THRESHOLD = 0.5f;
 
     /**
      * 滑动销毁速度界限
@@ -277,7 +277,6 @@ public class SwipeBackLayout extends FrameLayout
 
     /**
      * 移动背景Activity
-     * @param scrollPercent
      */
     private void moveBackgroundActivity(float scrollPercent)
     {

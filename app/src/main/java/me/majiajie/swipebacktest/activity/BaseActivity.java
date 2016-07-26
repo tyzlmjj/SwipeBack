@@ -10,7 +10,6 @@ import me.majiajie.swipeback.SwipeBackActivity;
 
 public class BaseActivity extends SwipeBackActivity
 {
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
