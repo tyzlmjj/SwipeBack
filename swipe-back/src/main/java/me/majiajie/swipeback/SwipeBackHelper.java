@@ -29,11 +29,6 @@ public class SwipeBackHelper
         mSwipeBackLayout.attachToActivity(mActivity);
     }
 
-    protected View getContentView()
-    {
-        return mSwipeBackLayout.getContentView();
-    }
-
     public View findViewById(int id)
     {
         if (mSwipeBackLayout != null)
@@ -43,8 +38,9 @@ public class SwipeBackHelper
         return null;
     }
 
-    public void setSwipeBackEnable(boolean enable)
+    protected SwipeBackLayout getSwipeBackLayout()
     {
-        mSwipeBackLayout.setSwipeBackEnable(enable);
+        return mSwipeBackLayout;
     }
+
 }

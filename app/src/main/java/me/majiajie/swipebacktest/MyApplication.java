@@ -11,7 +11,6 @@ public class MyApplication extends Application
     public void onCreate()
     {
         super.onCreate();
-
         this.registerActivityLifecycleCallbacks(ActivityStack.getInstance());
     }
 }

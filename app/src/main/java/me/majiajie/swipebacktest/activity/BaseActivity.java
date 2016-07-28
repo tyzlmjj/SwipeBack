@@ -4,6 +4,7 @@ import android.os.Build;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.Window;
 
 import me.majiajie.swipeback.SwipeBackActivity;
 
@@ -48,7 +49,7 @@ public class BaseActivity extends SwipeBackActivity
     {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-
+        Window window;
         if (resourceId > 0)
         {
             result = getResources().getDimensionPixelSize(resourceId);

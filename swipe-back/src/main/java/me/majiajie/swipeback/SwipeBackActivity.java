@@ -30,11 +30,7 @@ public class SwipeBackActivity extends AppCompatActivity
         super.onWindowFocusChanged(hasFocus);
         if(hasFocus)
         {
-            View view = getContentView();
-            if(view != null)
-            {
-                view.setTranslationX(0);
-            }
+            getSwipeBackLayout().recovery();
         }
     }
 
@@ -47,9 +43,9 @@ public class SwipeBackActivity extends AppCompatActivity
         return v;
     }
 
-    public View getContentView()
+    public SwipeBackLayout getSwipeBackLayout()
     {
-        return mSwipeBackHelper.getContentView();
+        return mSwipeBackHelper.getSwipeBackLayout();
     }
 
     /**
@@ -58,6 +54,6 @@ public class SwipeBackActivity extends AppCompatActivity
      */
     public void setSwipeBackEnable(boolean enable)
     {
-        mSwipeBackHelper.setSwipeBackEnable(enable);
+        getSwipeBackLayout().setSwipeBackEnable(enable);
     }
 }
